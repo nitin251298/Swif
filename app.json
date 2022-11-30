@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "SwifApp",
-    "slug": "SwifApp",
-    "version": "1.0.0",
+    "name": "Swif",
+    "slug": "Mobile",
+    "version": "0.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Beta-fav-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/SWIFAPPX_LOGO-Splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,13 +18,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.breezlab.swif"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Beta-fav-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "App.Swif.Mobile",
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA_ROLL"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
