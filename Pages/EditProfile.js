@@ -65,7 +65,7 @@ const EditProfile = ({ navigation }) => {
 
                     console.log(body);
 
-                    fetch('https://dev2.swif.cloud/api/UserProfile', {
+                    fetch('https://swif.cloud/api/UserProfile', {
                         method: 'POST', headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'multipart/form-data',

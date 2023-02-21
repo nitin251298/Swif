@@ -1818,6 +1818,7 @@ const Dashboard = ({ navigation }) => {
                 );
             });
         });
+        setRefreshing(false)
     })
 
     // const startdate = Moment().format('DD')

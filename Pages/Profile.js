@@ -112,12 +112,11 @@ const Profile = ({ navigation }) => {
             tx.executeSql('DROP TABLE IF EXISTS adhocitems', [])
             tx.executeSql('DROP TABLE IF EXISTS details', [])
             tx.executeSql('DROP TABLE IF EXISTS comment', [])
-            // tx.executeSql('DROP TABLE IF EXISTS gallery', [])
             tx.executeSql('DROP TABLE IF EXISTS cal', [])
             tx.executeSql('DROP TABLE IF EXISTS user',
                 [], (tx, result) => {
                     AsyncStorage.clear();
-                    navigation.navigate('FirstPage')
+                    navigation.navigate('OnboardingStep1')
                 });
         })
     }
@@ -217,14 +216,14 @@ const Profile = ({ navigation }) => {
     // }
 
 
-    const SelectTab = (item, index) => {
+    function SelectTab(item, index) {
         // this function is used for bottom tab navigation in dashboard,connection,notification and profle screen
-        setactiveIndex(index)
+        setactiveIndex(index);
         // console.log(Profiledata.userdetail.id)
         if (index === 0) {
-            setloading(true)
-            navigation.navigate('Dashboard')
-            setloading(false)
+            setloading(true);
+            navigation.navigate('Dashboard');
+            setloading(false);
         }
         // if (index === 1) {
         //     navigation.navigate('HistroyPage')
@@ -233,7 +232,7 @@ const Profile = ({ navigation }) => {
         //     navigation.navigate('Notification')
         // }
         if (index === 1) {
-            navigation.navigate('Profile')
+            navigation.navigate('Profile');
         }
     }
 
@@ -267,7 +266,7 @@ const Profile = ({ navigation }) => {
 
                         console.log(body);
 
-                        fetch('https://dev2.swif.cloud/api/UserProfile', {
+                        fetch('https://swif.cloud/api/UserProfile', {
                             method: 'POST', headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'multipart/form-data',

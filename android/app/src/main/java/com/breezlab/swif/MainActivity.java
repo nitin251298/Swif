@@ -1,4 +1,4 @@
-package App.Swif.Mobile;
+package com.breezlab.swif;
 
 import android.os.Build;
 import android.os.Bundle;

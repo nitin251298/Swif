@@ -4,7 +4,7 @@
     "slug": "Mobile",
     "version": "0.0.1",
     "orientation": "portrait",
-    "icon": "./assets/Beta-fav-icon.png",
+    "icon": "./assets/SWIFAPPX_LOGO-2.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/SWIFAPPX_LOGO-Splash.png",
@@ -22,11 +22,12 @@
       "bundleIdentifier": "com.breezlab.swif"
     },
     "android": {
+      "versionCode": 6,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Beta-fav-icon.png",
+        "foregroundImage": "./assets/SWIFAPPX_LOGO-2.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "App.Swif.Mobile",
+      "package": "com.breezlab.swif",
       "permissions": [
         "CAMERA",
         "WRITE_EXTERNAL_STORAGE",
@@ -35,6 +36,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "89753a5c-e39f-4145-a4d0-9fa22001be96"
+      }
     }
   }
 }

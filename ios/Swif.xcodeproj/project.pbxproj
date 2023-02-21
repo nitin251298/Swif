@@ -355,7 +355,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.breezlab.swif;
-				PRODUCT_NAME = Swif;
+				PRODUCT_NAME = "Swif";
 				SWIFT_OBJC_BRIDGING_HEADER = "Swif/Swif-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -381,7 +381,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.breezlab.swif;
-				PRODUCT_NAME = Swif;
+				PRODUCT_NAME = "Swif";
 				SWIFT_OBJC_BRIDGING_HEADER = "Swif/Swif-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

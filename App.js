@@ -22,6 +22,8 @@ import Dashboard2 from './Pages/Dashboard2';
 import EditProfile from './Pages/EditProfile';
 import SignList from './Pages/SignList';
 import FinalSing from './Pages/FinalSing';
+import OnboardingStep1 from './Pages/OnboardingStep1';
+import OnboardingStep2 from './Pages/OnBoardingStep2';
 
 const store = createStore(reducers);
 const persistor = persistStore(store)
@@ -32,7 +34,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
     <NavigationContainer>
-    <Stack.Navigator initialRouteName="FirstPage"
+    <Stack.Navigator initialRouteName="OnboardingStep1"
             screenOptions={{
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
             }}>
@@ -44,6 +46,16 @@ const App = () => {
             <Stack.Screen
               name="FirstPage"
               component={FirstPage}
+              options={{ title: 'FirstPage', headerShown: false }}
+            />
+            <Stack.Screen
+              name="OnboardingStep1"
+              component={OnboardingStep1}
+              options={{ title: 'FirstPage', headerShown: false }}
+            />
+            <Stack.Screen
+              name="OnboardingStep2"
+              component={OnboardingStep2}
               options={{ title: 'FirstPage', headerShown: false }}
             />
             <Stack.Screen

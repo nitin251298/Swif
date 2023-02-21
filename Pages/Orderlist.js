@@ -168,7 +168,7 @@ const Orderlist = ({ navigation }) => {
         })();
 
 
-        
+
 
         NetInfo.addEventListener(networkState => {
             // console.log("Connection type - ", networkState.type);
@@ -186,7 +186,7 @@ const Orderlist = ({ navigation }) => {
                     if (result.rows._array.length) {
 
                         console.error("details", result);
-                        // console.error(result);
+                        // console.error(result.rows._array[0]);
                         setting2(result.rows._array[0])
                         console.error(JSON.parse(result.rows._array[0].gallery));
                         setrequest1(JSON.parse(result.rows._array[0].gallery))
@@ -215,7 +215,6 @@ const Orderlist = ({ navigation }) => {
                 }
             );
         });
-        455
 
 
         db.transaction((tx) => {
@@ -272,10 +271,6 @@ const Orderlist = ({ navigation }) => {
             );
         });
 
-
-
-        456
-
         db.transaction((tx) => {
             tx.executeSql(
                 "SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%';",
@@ -330,7 +325,7 @@ const Orderlist = ({ navigation }) => {
         });
 
 
-        
+
 
         const unsubscribe = navigation.addListener('focus', () => {
             onRefresh();
@@ -737,12 +732,14 @@ const Orderlist = ({ navigation }) => {
     }
     const level4Inserted = (allData) => {
         allData.details.forEach((item, x) => {
+            console.log({'lllllllllllllllllllll':item.ad_hoc_items});
             if (item.ad_hoc_items.length) {
                 item.ad_hoc_items.forEach(ele => {
                     db.transaction((ct31) => {
+                        console.log("bpppppppppppppppppppp",ele.checked);
                         ct31.executeSql(
                             'INSERT INTO adhocitems (id, amount, checked, item, name, quantity, remarks, workorderid, Modification, category_id) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)',
-                            [ele.id, ele.amount, ele.checked, ele.item, ele.name, ele.quantity, ele.remarks, item.id, 0, ele.category_id],
+                            [ele.id, ele.amount*ele.quantity, ele.checked, ele.item, ele.name, ele.quantity, ele.remarks, item.id, 0, ele.category_id],
                             (tx, results) => {
                                 console.log("Adhoc item inseted Successfully");
                             }
@@ -802,10 +799,11 @@ const Orderlist = ({ navigation }) => {
         allData.details.forEach((detail, x) => {
             if (detail.task_list.length) {
                 detail.task_list.forEach((item, i) => {
+                    console.log('pppopokiojhhuggtdfesw',item);
                     db.transaction((ct51) => {
                         ct51.executeSql(
                             'INSERT INTO task (id, amount, price, checked, item, name, quantity, remarks, workorderid, Modification, custom) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?)',
-                            [item.id, item.amount, item.amount, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
+                            [item.id, item.amount*item.quantity, item.amount, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
                             (tx, results) => {
                                 console.log('Task insterd succesfuuly');
                             }
@@ -1132,10 +1130,10 @@ const Orderlist = ({ navigation }) => {
                 query,
                 [],
                 (tx, result2) => {
-                    if (result2.rows.length == 1) {
+                    if (result2.rows.length) {
                         if (result2.rows._array[0].total) {
                             var hocPrice = result2.rows._array[0].total;
-                            // alert(hocPrice)
+                            console.log("pppppppppppp",hocPrice);
                             if (table == 'adhocitems') {
                                 db.transaction((tx) => {
                                     tx.executeSql(
@@ -1235,7 +1233,6 @@ const Orderlist = ({ navigation }) => {
     }
 
     const cal = () => {
-        10000
         var temp = [];
         db.transaction((tx) => {
             tx.executeSql(
@@ -1562,7 +1559,8 @@ const Orderlist = ({ navigation }) => {
                     // return;
                     var price = result.rows._array[0].price;
                     var quantity = itemValue;
-                    var amount = parseFloat(price) * parseInt(quantity)
+                    var amount = parseInt(price) * parseInt(quantity)
+                    console.log("popopopopopopopopopopo",price,quantity,amount,item.id,result);
                     var query = 'UPDATE adhocitems SET amount=' + amount + ', quantity=' + quantity + ', checked=1, Modification=1 WHERE id=' + item.id;
                     // console.log('====================================');
                     // console.log(query);
@@ -1841,6 +1839,7 @@ const Orderlist = ({ navigation }) => {
             {
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
+                // base64:true,
                 aspect: [4, 3],
                 quality: 0.5,
                 height: 100,
@@ -1849,12 +1848,14 @@ const Orderlist = ({ navigation }) => {
         );
         console.error(result1);
 
-        //     const uri = result1.uri
-        // let fileName = ""
-        // fileName = result1.uri.split("/").slice(-1)[0]
-        // console.error("URI;", uri)
-        // const result = await FileSystem.getInfoAsync(uri)
-        // console.error("filesize", result)
+        const path = FileSystem.cacheDirectory + "sign.png";
+        FileSystem.writeAsStringAsync(
+            path,
+            result1.uri.replace("data:image/jpg;base64,", ""),
+            { encoding: FileSystem.EncodingType.Base64 }
+        )
+            .then(() => FileSystem.getInfoAsync(path))
+            console.log("path",path);
 
 
         let imgIdentification = makeName(15)
@@ -1904,9 +1905,10 @@ const Orderlist = ({ navigation }) => {
                         [],
                         (tx, results) => {
                             let token = results.rows._array[0].token;
+                            console.log({token});
 
                             if (result1) {
-                                
+
                                 let body = new FormData();
                                 body.append('workorder_id', local.id)
                                 body.append('file', { uri: result1.uri, name: 'file.jpg', filename: 'imageName.jpg', type: 'image/jpg' });
@@ -1916,16 +1918,17 @@ const Orderlist = ({ navigation }) => {
                                 console.log(body);
 
                                 fetch('https://swif.cloud/api/wxuploadImage', {
-                                    method: 'POST', headers: {
+                                    method: 'POST',
+                                    headers: {
                                         'Accept': 'application/json',
                                         'Content-Type': 'multipart/form-data',
                                         'Authorization': token,
                                     }, body: body
                                 })
-                                    // .then((response) => (response.json()))
+                                    .then((response) => (response.json()))
                                     .then((res) => {
-                                        // alert(JSON.stringify(res));
-                                        console.error(res);
+                                        console.log(res);
+                                        console.error({ "after fetch result": res });
                                         // return 
                                         if (res.error) {
                                             // alert('image not uploaded please try again')
@@ -1939,7 +1942,7 @@ const Orderlist = ({ navigation }) => {
                                                     'SELECT * FROM details WHERE id=' + Id,
                                                     [],
                                                     (tx, result) => {
-                                                        
+
                                                         setting2(result.rows._array[0])
                                                         setrequest1(JSON.parse(result.rows._array[0].gallery))
                                                         setgallary(JSON.parse(result.rows._array[0].gallery))
@@ -1950,13 +1953,13 @@ const Orderlist = ({ navigation }) => {
                                                         setfixtime(fixtime)
                                                         setground(ground)
                                                         setimagecount(JSON.parse(result.rows._array[0].gallery).length)
-                                                        
+
                                                     }
                                                 );
                                             });
                                             // Request();
                                             222
-                                            
+
                                             onRefreshs()
 
                                         }
@@ -2137,9 +2140,9 @@ const Orderlist = ({ navigation }) => {
         setactiveIndex(index)
         // console.log(Profiledata.userdetail.id)
         if (index === 0) {
-            
+
             navigation.navigate('Dashboard')
-            
+
         }
         if (index === 1) {
             onRefresh()
@@ -2441,7 +2444,7 @@ const Orderlist = ({ navigation }) => {
                         {local.team == "" &&
                             <Text style={{ textAlign: 'left', fontFamily: 'Roboto', lineHeight: 15, fontSize: 12, }}></Text>}
                         {local.team != "" &&
-                            <Text style={{ textAlign: 'left', fontFamily: 'Roboto', lineHeight: 15, fontSize: 12,maxWidth:'85%' }}>,{local.team}</Text>}
+                            <Text style={{ textAlign: 'left', fontFamily: 'Roboto', lineHeight: 15, fontSize: 12, maxWidth: '85%' }}>,{local.team}</Text>}
                     </View>
                 </View>
             </View>
@@ -2454,7 +2457,7 @@ const Orderlist = ({ navigation }) => {
                             style={{ width: 40, height: 40 }}
                             source={require('../src/assets/read-with-hand.png')}
                         />
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', paddingLeft: 10, alignSelf: 'center', textAlign: 'left', fontFamily: 'Roboto', maxWidth:'90%' }}>{local.service_name}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', paddingLeft: 10, alignSelf: 'center', textAlign: 'left', fontFamily: 'Roboto', maxWidth: '90%' }}>{local.service_name}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 0.5, borderBottomColor: '#CECECE' }}>
                         <View style={{ flexDirection: 'row', display: 'flex', padding: 5 }}>
@@ -2462,7 +2465,7 @@ const Orderlist = ({ navigation }) => {
                                 style={{ width: 30, height: 30 }}
                                 source={require('../src/assets/c-A.png')}
                             />
-                            <Text style={{ color: '#4B4B4B', fontSize: 14, paddingLeft: 5, alignSelf: 'center', fontFamily: 'Roboto', maxWidth:'78%' }}>{local.option_name}</Text>
+                            <Text style={{ color: '#4B4B4B', fontSize: 14, paddingLeft: 5, alignSelf: 'center', fontFamily: 'Roboto', maxWidth: '78%' }}>{local.option_name}</Text>
                         </View>
                         <View style={{ justifyContent: 'flex-end', alignItems: 'flex-end', alignSelf: 'center', paddingRight: 10 }}>
                             <Text style={{ color: '#4B4B4B', fontSize: 16, fontFamily: 'Roboto' }}>${parseFloat(local.option_price).toFixed(2)}</Text>
@@ -2563,22 +2566,22 @@ const Orderlist = ({ navigation }) => {
                                                 <Text>{item.quantity}</Text>
                                                 {
                                                     <Picker
-                                                    selectedValue={selectedValue}
-                                                    style={{ height: 30, width: 50, paddingLeft: 10 }}
-                                                    onValueChange={(itemValue, itemIndex) => taskprice(itemValue, item)}
-                                                >
-                                                    <Picker.Item label="" value="" />
-                                                    <Picker.Item label="1" value="1" />
-                                                    <Picker.Item label="2" value="2" />
-                                                    <Picker.Item label="3" value="3" />
-                                                    <Picker.Item label="4" value="4" />
-                                                    <Picker.Item label="5" value="5" />
-                                                    <Picker.Item label="6" value="6" />
-                                                    <Picker.Item label="7" value="7" />
-                                                    <Picker.Item label="8" value="8" />
-                                                    <Picker.Item label="9" value="9" />
-                                                    <Picker.Item label="10" value="10" />
-                                                </Picker>}
+                                                        selectedValue={selectedValue}
+                                                        style={{ height: 30, width: 50, paddingLeft: 10 }}
+                                                        onValueChange={(itemValue, itemIndex) => taskprice(itemValue, item)}
+                                                    >
+                                                        <Picker.Item label="" value="" />
+                                                        <Picker.Item label="1" value="1" />
+                                                        <Picker.Item label="2" value="2" />
+                                                        <Picker.Item label="3" value="3" />
+                                                        <Picker.Item label="4" value="4" />
+                                                        <Picker.Item label="5" value="5" />
+                                                        <Picker.Item label="6" value="6" />
+                                                        <Picker.Item label="7" value="7" />
+                                                        <Picker.Item label="8" value="8" />
+                                                        <Picker.Item label="9" value="9" />
+                                                        <Picker.Item label="10" value="10" />
+                                                    </Picker>}
                                                 {/* <Text style={{ fontFamily: 'Roboto', textAlign: 'center' }}>{selectSport}</Text>
                                         <SectionedMultiSelect                        // THIS PACKAGE FOR SELECT MULTIPLE quntity
                                             items={data}
@@ -2750,7 +2753,7 @@ const Orderlist = ({ navigation }) => {
                                             </Picker>
                                         </View>
                                         <View style={{ alignSelf: "center" }}>
-                                            <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${parseFloat(item.amount)*(item.quantity)}</Text>
+                                            <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${parseFloat(item.amount)}</Text>
                                         </View>
                                     </View>}
                             />}
@@ -2853,7 +2856,7 @@ const Orderlist = ({ navigation }) => {
                                                     </View>
                                                     {local.executionPermission == '1' &&
                                                         <View>
-                                                            
+
                                                             <Image
                                                                 style={{ width: 40, height: 40, }}
                                                                 source={require('../src/assets/close-png.png')}
