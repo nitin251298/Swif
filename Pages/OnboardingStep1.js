@@ -29,22 +29,6 @@ const OnboardingStep1 = ({ navigation }) => {
             setintStatus(networkState.isConnected);
         });
 
-
-        // AsyncStorage.getItem('USER',(err,result)=>{
-        //     if(err){
-        //         // console.log(err);
-        //         navigation.navigate('FirstPage')
-        //     }
-        //     if(result){
-        //         // console.log("pop",result);
-        //         if(result.loginERR){
-        //             navigation.navigate('FirstPage')
-        //         }else{
-        //             navigation.navigate('Dashboard')
-        //         }
-        //     }
-        // })
-
         let bodyFormData = {}    // PARAMETER FOR PASSWORD
         axios({
             method: 'post',
@@ -55,31 +39,13 @@ const OnboardingStep1 = ({ navigation }) => {
             .then(({ data, status }) => {
                 console.log(data)
                 setMasterDataSource(data.details)
-                // dispatch(Data(data.details))
-                // navigation.navigate('LoginScreen')
             }
             )
             .catch(error => {
                 console.log("boooooooooooooooo", error.response.data);
-                // alert("Invalid Username")
             })
-        // console.log("masterDataSource",masterDataSource);
     }, []);
 
-    const ItemView = ({ item }) => {
-        return (
-            // Flat List Item
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center', backgroundColor: '#F0F0F0' }}>
-                <Image source={{ uri: item.company_logo }} style={{ height: '100%', width: '15%' }} />
-                <Text style={{ fontSize: 16, paddingLeft: 20, textAlign: 'right' }}
-                    onPress={() => { getItem(item) }}>
-                    {/* {item.id}
-                {'.'} */}
-                    {item.name}dlmshfjkhdsfgndfls;niodsnflkadnskldksfnl;sdmfcklsfmkadsnf lsakosjdklsdnvdklvnjkldsfnklmfnjk
-                </Text>
-            </View>
-        );
-    };
     const ItemSeparatorView = () => {
         return (
             // Flat List Item Separator
@@ -117,7 +83,16 @@ const OnboardingStep1 = ({ navigation }) => {
         setfulldata(item)
     }
     const Submit = () => {
-        navigation.navigate('OnboardingStep2',{item:fulldata})
+        if(fulldata){
+            if(fulldata?.name){
+                navigation.navigate('OnboardingStep2',{item:fulldata})
+            }else{
+                alert("Please Select Company First")
+            }
+        }else{
+            alert("Please Select Company First")
+
+        }
     }
 
     return (
@@ -183,9 +158,6 @@ const OnboardingStep1 = ({ navigation }) => {
                     }}>
                     <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>Submit</Text>
                 </TouchableOpacity>
-                {/* <View style={{ paddingTop: 25 }}>
-                        <Text style={{ justifyContent: 'center', alignSelf: 'center', color: '#737373',fontSize:20 }}>Forgot UserID?</Text>
-                    </View> */}
             </View>
         </SafeAreaView>
     )

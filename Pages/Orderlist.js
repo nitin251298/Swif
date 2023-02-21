@@ -72,19 +72,9 @@ const Orderlist = ({ navigation }) => {
     const [adcom, setadcom] = useState(false)
     const [adtask, setadtask] = useState(false)
     const [searchQuery, setSearchQuery] = React.useState('')
-    const [getid, setid] = useState([])
-    const [catid, setcatid] = useState([])
-    const [Comment, setcomment] = useState([])
     const [selectedValue, setSelectedValue] = useState("");
-    const [pickedImagePath, setPickedImagePath] = useState("");
-    const [expectedTime, setexpectedTime] = useState('');
-    const [msg, setmsg] = useState('')
-    const details = useSelector(state => state.details)
     const [days, setday] = useState("")
     const [gallery, setgallary] = useState([])
-
-    const [re, setre] = useState("")
-
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
@@ -93,43 +83,22 @@ const Orderlist = ({ navigation }) => {
 
     const [isStopwatchStart, setIsStopwatchStart] = useState(false);
     const [resetStopwatch, setResetStopwatch] = useState(false);
-    const [tim, settim] = useState('')
-    const [fin, setfin] = useState('')
     const [reid, setreid] = useState('')
-    const [selectSport, setselectSport] = useState("1")
     const [total, setTotal] = useState(0);
-
-    const [date] = useState(new Date().getTime())
-    const hours = new Date().getHours(); //To get the Current Hours
-    const min = new Date().getMinutes(); //To get the Current Minutes
-    const sec = new Date().getSeconds()
     const hour = new Date().getHours()
     const mint = new Date().getMinutes()
     const secs = new Date().getSeconds()
-    const [image, setimage] = useState([]);
-    const [filePath, setFilePath] = useState([]);
-    const [subData, setSubData] = useState([]);
     const [resion, setresion] = useState("")
     const [cnlresion, setcnlresion] = useState("")
-    const [actualtime, setactualtime] = useState('')
-    const [startTime, setStartTime] = useState('');
-    const [starttime, setstartTime] = useState('');
     const [task, settask] = useState([])
-    const [aditem, setitem] = useState([])
-    const [play, setplay] = useState(false)
-    const [cmtmsg, setcmtcmg] = useState('')
     const [imagecount, setimagecount] = useState(0)
     const [totaltask, setTotalTask] = useState(1)
     const [fixtime, setfixtime] = useState('')
     const [ground, setground] = useState('')
-    const [it, setitems] = useState([])
-    const [cl, setcancel] = useState([])
     const [local, setlocal] = useState([])
     const [adhocs, setadhocs] = useState([])
     const [tasklist, settasklist] = useState([])
     const [adhoc, setadhoc] = useState([])
-    const [adHocT, sethocT] = useState(0)
-    const [taskT, settaskT] = useState(0)
     const [today] = useState(Moment().format('YYYY-MM-DD'));
     const [IntStatus, setintStatus] = useState(false);
     const [request1, setrequest1] = useState([]);
@@ -512,7 +481,7 @@ const Orderlist = ({ navigation }) => {
     }
 
     const hellInserted = async (allData) => {
-        // console.log({"insert":allData.list});
+        console.warn({"insert":allData});
         allData.list.forEach((hell, i) => {
             if (hell.contractNumber) {
                 db.transaction((ct1) => {
@@ -799,11 +768,10 @@ const Orderlist = ({ navigation }) => {
         allData.details.forEach((detail, x) => {
             if (detail.task_list.length) {
                 detail.task_list.forEach((item, i) => {
-                    console.log('pppopokiojhhuggtdfesw',item);
                     db.transaction((ct51) => {
                         ct51.executeSql(
                             'INSERT INTO task (id, amount, price, checked, item, name, quantity, remarks, workorderid, Modification, custom) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?)',
-                            [item.id, item.amount*item.quantity, item.amount, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
+                            [item.id, item.amount, item.amount/item.quantity, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
                             (tx, results) => {
                                 console.log('Task insterd succesfuuly');
                             }
@@ -2323,59 +2291,7 @@ const Orderlist = ({ navigation }) => {
                     });
                 }
             );
-        });
-
-        // 
-        // db.transaction((tx) => {
-        //     tx.executeSql(
-        //         'SELECT * FROM user ORDER BY id DESC LIMIT 1',
-        //         [],
-        //         (tx, results) => {
-        //             let token = results.rows._array[0].token;
-
-        //             let bodyFormData = { 'id': item.id }
-        //             // console.log(bodyFormData);
-        //             axios({
-        //                 method: 'post',
-        //                 url: `https://swif.cloud/api/wxuploadRemoveImage`,
-        //                 data: bodyFormData,
-        //                 headers: { 'Authorization': token }
-        //             })
-        //                 .then(({ data, status }) => {
-        //                     // console.warn(data);
-        //                     // alert(JSON.stringify(data))
-        //                     // NetInfo.addEventListener(networkState => {
-        //                     //     if (networkState.isConnected == true) {
-        //                     Request();
-        //                     //     }
-        //                     // })
-        //                     db.transaction((tx) => {
-        //                         tx.executeSql(
-        //                             'SELECT * FROM details WHERE id=' + Id,
-        //                             [],
-        //                             (tx, result) => {
-        //                                 console.error("details", result);
-        //                                 setgallary(JSON.parse(result.rows._array[0].gallery))
-        //                                 setting2(result.rows._array[0])
-        //                                 var extime = Moment(result.rows._array[0].expected_end_time, 'hh').format('hh')
-        //                                 var extimes = Moment(result.rows._array[0].expected_end_time, 'hh mm').format('mm')
-        //                                 var ground = Moment(result.rows._array[0].actual_end_time, 'hh mm a').format('hh:mm a')
-        //                                 var fixtime = Moment(result.rows._array[0].expected_start_time, 'hh mm a').add(extime, 'hours').add(extimes, 'minutes').format('hh:mm a')
-        //                                 setfixtime(fixtime)
-        //                                 setground(ground)
-        //                                 alert("Image remove sucessfully")
-        //                                 // 
-        //                             }
-        //                         );
-        //                     });
-        //                 })
-        //                 .catch(error => {
-        //                     alert("Something Went Wrong In Remove Picture")
-        //                 })
-        //         }
-        //     );
-        // });
-
+        }); 
     }
 
 
@@ -2386,10 +2302,6 @@ const Orderlist = ({ navigation }) => {
                 <View style={{ paddingTop: 30, backgroundColor: 'red', zIndex: 22, paddingBottom: 5 }}>
                     <Text style={{ textAlign: 'center', color: '#fff', fontSize: 13 }}>No Internet connection</Text>
                 </View>}
-            {/* {IntStatus &&
-                <View style={{ paddingTop: 30, backgroundColor: 'green', zIndex: 22, paddingBottom: 5 }}>
-                    <Text style={{ textAlign: 'center', color: '#fff', fontSize: 13 }}>Internet connection Found</Text>
-                </View>} */}
 
             <View style={{ paddingLeft: 15, paddingRight: 15, paddingTop: 15, paddingTop: 30 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -2536,7 +2448,7 @@ const Orderlist = ({ navigation }) => {
                                                     <Text style={{ alignSelf: 'center', textAlign: 'center', fontFamily: 'Roboto' }}>{item.quantity}</Text>
                                                 </View>
                                                 <View style={{ width: '18%' }}>
-                                                    <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${parseFloat(item.amount) * parseFloat(item.quantity)}</Text>
+                                                    <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${parseFloat(item.amount)}</Text>
                                                 </View>
                                             </View>}
                                         {item.checked == "0" &&
@@ -2561,7 +2473,7 @@ const Orderlist = ({ navigation }) => {
                                                 }
 
                                             </View>}
-                                        {item.checked == "0" &&
+                                        {(item.checked == "0" && local.workstatusname == "In Progress") &&
                                             <View style={{ alignItems: 'center', alignSelf: 'center', flexDirection: 'row' }}>
                                                 <Text>{item.quantity}</Text>
                                                 {
@@ -2598,6 +2510,9 @@ const Orderlist = ({ navigation }) => {
                                             styles={{ selectToggle: { fontSize: 16, padding: 10 }, chipsWrapper: { padding: 10, backgroundColor: '#fff' } }}
                                         /> */}
                                             </View>}
+                                            {local.workstatusname != "In Progress" &&
+                                                <Text>{item.quantity}</Text>
+                                            }
                                         {item.checked == "0" &&
                                             <View style={{ alignSelf: 'center' }}>
                                                 <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${item.amount}</Text>
@@ -2646,7 +2561,7 @@ const Orderlist = ({ navigation }) => {
                                                     <Text style={{ alignSelf: 'center', textAlign: 'center', fontFamily: 'Roboto' }}>{item.quantity}</Text>
                                                 </View>
                                                 <View style={{ width: '18%' }}>
-                                                    <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${parseFloat(item.amount) * parseFloat(item.quantity)}</Text>
+                                                    <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${parseFloat(item.amount)}</Text>
                                                 </View>
                                             </View>}
                                         {item.checked == "0" &&
