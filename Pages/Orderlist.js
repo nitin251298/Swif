@@ -481,7 +481,7 @@ const Orderlist = ({ navigation }) => {
     }
 
     const hellInserted = async (allData) => {
-        console.warn({"insert":allData});
+        console.warn({ "insert": allData });
         allData.list.forEach((hell, i) => {
             if (hell.contractNumber) {
                 db.transaction((ct1) => {
@@ -701,14 +701,14 @@ const Orderlist = ({ navigation }) => {
     }
     const level4Inserted = (allData) => {
         allData.details.forEach((item, x) => {
-            console.log({'lllllllllllllllllllll':item.ad_hoc_items});
+            console.log({ 'lllllllllllllllllllll': item.ad_hoc_items });
             if (item.ad_hoc_items.length) {
                 item.ad_hoc_items.forEach(ele => {
                     db.transaction((ct31) => {
-                        console.log("bpppppppppppppppppppp",ele.checked);
+                        console.log("bpppppppppppppppppppp", ele.checked);
                         ct31.executeSql(
                             'INSERT INTO adhocitems (id, amount, checked, item, name, quantity, remarks, workorderid, Modification, category_id) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)',
-                            [ele.id, ele.amount*ele.quantity, ele.checked, ele.item, ele.name, ele.quantity, ele.remarks, item.id, 0, ele.category_id],
+                            [ele.id, ele.amount * ele.quantity, ele.checked, ele.item, ele.name, ele.quantity, ele.remarks, item.id, 0, ele.category_id],
                             (tx, results) => {
                                 console.log("Adhoc item inseted Successfully");
                             }
@@ -771,7 +771,7 @@ const Orderlist = ({ navigation }) => {
                     db.transaction((ct51) => {
                         ct51.executeSql(
                             'INSERT INTO task (id, amount, price, checked, item, name, quantity, remarks, workorderid, Modification, custom) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?)',
-                            [item.id, item.amount, item.amount/item.quantity, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
+                            [item.id, item.amount, item.amount / item.quantity, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
                             (tx, results) => {
                                 console.log('Task insterd succesfuuly');
                             }
@@ -1101,7 +1101,7 @@ const Orderlist = ({ navigation }) => {
                     if (result2.rows.length) {
                         if (result2.rows._array[0].total) {
                             var hocPrice = result2.rows._array[0].total;
-                            console.log("pppppppppppp",hocPrice);
+                            console.log("pppppppppppp", hocPrice);
                             if (table == 'adhocitems') {
                                 db.transaction((tx) => {
                                     tx.executeSql(
@@ -1528,7 +1528,7 @@ const Orderlist = ({ navigation }) => {
                     var price = result.rows._array[0].price;
                     var quantity = itemValue;
                     var amount = parseInt(price) * parseInt(quantity)
-                    console.log("popopopopopopopopopopo",price,quantity,amount,item.id,result);
+                    console.log("popopopopopopopopopopo", price, quantity, amount, item.id, result);
                     var query = 'UPDATE adhocitems SET amount=' + amount + ', quantity=' + quantity + ', checked=1, Modification=1 WHERE id=' + item.id;
                     // console.log('====================================');
                     // console.log(query);
@@ -1813,7 +1813,8 @@ const Orderlist = ({ navigation }) => {
                 height: 100,
                 width: 100,
             }
-        );
+        )
+
         console.error(result1);
 
         const path = FileSystem.cacheDirectory + "sign.png";
@@ -1823,7 +1824,7 @@ const Orderlist = ({ navigation }) => {
             { encoding: FileSystem.EncodingType.Base64 }
         )
             .then(() => FileSystem.getInfoAsync(path))
-            console.log("path",path);
+        console.log("path", path);
 
 
         let imgIdentification = makeName(15)
@@ -1873,13 +1874,18 @@ const Orderlist = ({ navigation }) => {
                         [],
                         (tx, results) => {
                             let token = results.rows._array[0].token;
-                            console.log({token});
+                            console.log({ token });
 
                             if (result1) {
 
                                 let body = new FormData();
                                 body.append('workorder_id', local.id)
-                                body.append('file', { uri: result1.uri, name: 'file.jpg', filename: 'imageName.jpg', type: 'image/jpg' });
+                                body.append('file', {
+                                    uri: result1.uri,
+                                    name: 'file.jpg',
+                                    filename: 'imageName.jpg',
+                                    type: 'image/jpg'
+                                });
                                 body.append('Content-Type', 'image/jpg');
                                 body.append('uniqueid', imgIdentification);
 
@@ -2291,7 +2297,7 @@ const Orderlist = ({ navigation }) => {
                     });
                 }
             );
-        }); 
+        });
     }
 
 
@@ -2510,9 +2516,9 @@ const Orderlist = ({ navigation }) => {
                                             styles={{ selectToggle: { fontSize: 16, padding: 10 }, chipsWrapper: { padding: 10, backgroundColor: '#fff' } }}
                                         /> */}
                                             </View>}
-                                            {local.workstatusname != "In Progress" &&
-                                                <Text>{item.quantity}</Text>
-                                            }
+                                        {local.workstatusname != "In Progress" &&
+                                            <Text>{item.quantity}</Text>
+                                        }
                                         {item.checked == "0" &&
                                             <View style={{ alignSelf: 'center' }}>
                                                 <Text style={{ alignSelf: 'center', color: '#4B4B4B', textAlign: 'center', fontFamily: 'Roboto' }}>${item.amount}</Text>
@@ -2529,7 +2535,7 @@ const Orderlist = ({ navigation }) => {
                                 ItemSeparatorComponent={ItemSeparatorView}
                                 renderItem={({ item, index }) =>
                                     <View style={{ flexDirection: 'row', paddingLeft: 10, paddingRight: 10, paddingBottom: 5, paddingTop: 3, justifyContent: 'space-between' }}>
-                                        {
+                                        {item.checked == "1" &&
                                             <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center', width: '70%' }}>
                                                     {/* <AntDesign name="checksquareo" size={24} color="#000" /> */}
