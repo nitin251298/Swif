@@ -2143,12 +2143,7 @@ const Dashboard = ({ navigation }) => {
                                                                 <Icon name="document-text-outline" size={25} color="#222323" />
                                                                 <Text style={{ paddingLeft: 5 }}>{item.contractNumber}</Text>
                                                             </View>}
-                                                        {!item.contractNumber &&
-                                                            <View style={{ flexDirection: 'row' }}>
-                                                                {/* <Icon name="document-text-outline" size={28} color="#000" />
-                                                                <Text style={{ padding: 5 }}>{item.contractNumber}</Text> */}
-                                                            </View>
-                                                        }
+                                                        
                                                     </View>
                                                 </View>
                                                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginTop: 5 }}>

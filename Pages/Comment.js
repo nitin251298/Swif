@@ -579,7 +579,7 @@ const Comment = ({ navigation }) => {
                     db.transaction((ct31) => {
                         ct31.executeSql(
                             'INSERT INTO adhocitems (id, amount, checked, item, name, quantity, remarks, workorderid, Modification, category_id) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)',
-                            [ele.id, ele.amount, ele.checked, ele.item, ele.name, ele.quantity, ele.remarks, item.id, 0, ele.category_id],
+                            [ele.id, ele.amount / ele.quantity, ele.checked, ele.item, ele.name, ele.quantity, ele.remarks, item.id, 0, ele.category_id],
                             (tx, results) => {
                                 console.log("Adhoc item inseted Successfully");
                             }
@@ -642,7 +642,7 @@ const Comment = ({ navigation }) => {
                     db.transaction((ct51) => {
                         ct51.executeSql(
                             'INSERT INTO task (id, amount, price, checked, item, name, quantity, remarks, workorderid, Modification, custom) VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?)',
-                            [item.id, item.amount, item.amount, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
+                            [item.id, item.amount, item.amount / item.quantity, item.checked, item.item, item.name, item.quantity, item.remarks, detail.id, 0, item.custom],
                             (tx, results) => {
                                 console.log('Task insterd succesfuuly');
                             }
